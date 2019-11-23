@@ -1,10 +1,12 @@
 package com.tunglain.atm3;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -14,10 +16,18 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final int REQUEST_LOGIN = 100;
+    private boolean logon = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if(!logon) {
+            Intent intent = new Intent(this,LoginActivity.class);
+            startActivityForResult(intent,REQUEST_LOGIN);
+        }
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -29,6 +39,16 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_LOGIN){
+            if(resultCode != RESULT_OK){
+                finish();
+            }
+        }
     }
 
     @Override
